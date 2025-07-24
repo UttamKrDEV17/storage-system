@@ -1,11 +1,20 @@
-import Minio from "minio"
+import * as Minio from "minio";
+import { S3Client } from '@aws-sdk/client-s3'
 
-const minioClient = new Minio.Client({
-  endPoint: process.env.MINIO_ENDPOINT || 'localhost',
-  port: parseInt(process.env.MINIO_PORT || '9000', 10), // Port should be a number
-  useSSL: process.env.MINIO_USE_SSL === 'true', // Convert string to boolean
-  accessKey: process.env.MINIO_ACCESS_KEY || 'minioadmin',
-  secretKey: process.env.MINIO_SECRET_KEY || 'minioadmin'
-});
 
-export {minioClient}
+// Setup MinIO credentials (S3-compatible)
+const s3Client = new S3Client({
+  endpoint:  process.env.MINIO_ENDPOINT,     
+  region: process.env.MINIO_DEFAULT_REGION,                   
+  credentials: {
+    accessKeyId: process.env.MINIO_ACCESS_KEY,                
+    secretAccessKey: process.env.MINIO_SECRET_KEY,         
+  },
+  forcePathStyle: true,             
+})
+
+
+
+export {
+  s3Client
+}

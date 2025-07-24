@@ -2,10 +2,9 @@ import bcrypt from "bcrypt";
 import { generateAccessToken, generateRefreshToken } from "../utils/token.js";
 import User from "../models/user.model.js";
 import Folder from "../models/folder.model.js";
-import File from "../models/file.model.js";
 import Session from "../models/session.model.js";
 import crypto from "crypto";
-import { sendEmail } from "../utils/emailService.js";
+import { sendEmail } from "../services/emailService.js";
 
 const login = async (req, res) => {
   try {
@@ -197,6 +196,9 @@ const register = async (req, res) => {
       parentFolder: null,
       isRoot: true,
       visibility: "private",
+      sharedWith: [{user: newUser._id,
+        permission: 'manage',
+      }]
     });
 
     newUser.rootFolder = rootFolder._id;
